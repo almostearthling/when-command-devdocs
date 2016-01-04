@@ -150,7 +150,7 @@ Version 0.2.0 (beta)
 
   This release is not compatible with previous ones, both *Tasks* and
   *Conditions* must be redefined from scratch. Hopefully this will be the
-  one and only compatibility break. To clean up tasks and conditions, please
+  one and only compatibility break. To clean up tasks and conditions,
   run the following commands in a terminal window (on Ubuntu):
 
   | ``$ rm ~/.config/when-command/*.list``
