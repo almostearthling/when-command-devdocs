@@ -112,7 +112,7 @@ that you would like to edit and you will be presented with a window that
 allows per-string based translation. [#nonewstrings]_
 
 
-Translation hints
+Translation Hints
 =================
 
 I have tried to be as consistent as possible when writing UI text and command
