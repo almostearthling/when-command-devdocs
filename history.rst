@@ -2,6 +2,13 @@
 History
 =======
 
+Version 0.9.7 (beta)
+====================
+
+* Suppress Task History box in Minimalistic Mode
+* Ellipsize History Box columns
+
+
 Version 0.9.6 (beta)
 ====================
 
