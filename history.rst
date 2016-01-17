@@ -8,6 +8,7 @@ Version 0.9.7 (beta)
 * Suppress Task History box in Minimalistic Mode
 * Ellipsize History Box columns
 * Better DBus interface
+* Make most configuration changes immediately active
 * Code cleanup
 * Bug fixes
 
