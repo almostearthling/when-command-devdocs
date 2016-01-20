@@ -14,5 +14,6 @@ Contents:
    localization.rst
    packaging.rst
    testing.rst
+   dbusapi.rst
    history.rst
    license.rst
