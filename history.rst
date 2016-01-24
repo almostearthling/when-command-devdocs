@@ -2,6 +2,14 @@
 History
 =======
 
+Version 0.9.8 (beta)
+====================
+
+* Full DBus Interface
+* Fix window z-order problems on XUbuntu
+* Minor fixes
+
+
 Version 0.9.7 (beta)
 ====================
 
