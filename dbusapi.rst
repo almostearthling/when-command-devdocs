@@ -132,18 +132,9 @@ Method                              Description
                                     success and *False* on failure
 =================================== ==========================================
 
-Note that the *item definition* dictionary returned by ``GetItemDefinition``
-is valid in terms of entries, but cannot be directly used as an argument to
-``AddItemByDefinition`` because the latter expects *variants* as values
-for entries, while the former returns the correct types.
-
-.. Warning::
-
-  This behavior may change and future releases may return maps of *variants*
-  to make ``AddItemByDefinition(GetItemDefinition(...), ...)`` correct.
-
-
-.. _`user guide`: http://when-documentation.readthedocs.org/
+*Item definition* dictionaries returned by ``GetItemDefinition`` and handled
+by ``AddItemByDefinition`` are implemented using strings as keys and variants
+as values.
 
 
 Reserved Methods
