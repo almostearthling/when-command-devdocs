@@ -12,6 +12,7 @@ Contents:
 
    contributing.rst
    localization.rst
+   wizard.rst
    packaging.rst
    testing.rst
    dbusapi.rst
