@@ -320,7 +320,7 @@ very useful to create condition that occur on events that are not handled by
 **When** by default, and the possibilities are virtually endless.
 
 Because the corresponding conditions occur when the related *DBus* signal is
-fired,
+fired, in most cases the related plugins will need no configuration pane.
 
 The base class for this type of plugin is ``UserEventConditionPlugin``.
 
