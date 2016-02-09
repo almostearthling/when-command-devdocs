@@ -6,7 +6,8 @@ The **When Wizard** aims at becoming, possibly, the main interface to
 **When** for those users who just want to instruct their workstations to
 perform simpler tasks on a rich subset of the available conditions, or for
 those system administrators who want to provide standardized sets of tasks
-and events or conditions that may trigger such tasks.
+and events or conditions that may trigger such tasks. The **When Wizard**
+is available (in *early development* stage) at its own repository_.
 
 The **When Wizard** has been designed for extensibility: it is completely
 based on plugins that are loaded by a small application core. Some plugins
@@ -43,6 +44,9 @@ types of conditions can be added as shortcuts to more complex ones:
 
 The following paragraphs will illustrate briefly how a plugin for the
 **When Wizard** can be implemented.
+
+
+.. _repository: https://github.com/almostearthling/when-wizard.git
 
 
 Plugin Rationale
