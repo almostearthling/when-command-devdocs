@@ -2,6 +2,15 @@
 History
 =======
 
+Version 0.9.9 (beta)
+====================
+
+* Remote DBus Interface fixes
+* More flexible and robust item conversion functions
+* Future Ubuntu version compatibility
+* Bug fixes
+
+
 Version 0.9.8 (beta)
 ====================
 
