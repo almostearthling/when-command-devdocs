@@ -11,7 +11,7 @@ is available (in *early development* stage) at its own repository_.
 
 The **When Wizard** has been designed for extensibility: it is completely
 based on plugins that are loaded by a small application core. Some plugins
-are provided by default (i call them *stock plugins*), others may be
+are provided by default (I call them *stock plugins*), others may be
 developed and easily added to the application.
 
 .. Warning::
@@ -225,14 +225,52 @@ pane, and dialog signal handling functions must be defined to retrieve
 configuration values from the pane just as if it were a standard *Gtk* dialog
 box.
 
-.. Note::
+Task plugins also give the possibility to set one and only one of the
+following variables:
 
-  Task plugins are among those that will be enhanced in further versions of
-  the **When Wizard**, probably before it hits *beta* stage. Enhancements
-  will include more control on the associated command, including checks for
-  output and exit status. However, since this will add to current
-  implementation instead of replacing it, plugins developed for early
-  versions of the application should continue to work in future releases.
+=============== ==============================================================
+Variable        Description
+=============== ==============================================================
+success_status  if the status code of the called process has to be checked
+                for a specific success value; must be an integer and
+                defaults to ``0``
+failure_status  if the status code of the called process has to be checked
+                for a specific failure value; must be an integer
+success_stdout  a string that, if corresponding to process output (written
+                to *stdout*), will let the process execution be considered
+                a success; modifiers specified below can change the way the
+                correspondance is checked
+failure_stdout  a string that, if corresponding to process output (written
+                to *stdout*), will let the process execution be considered
+                a failure; same as above for modifiers
+success_stderr  string that, if corresponding to process output (written
+                to *stderr*), will let the process execution be considered
+                a success; same as above for modifiers
+failure_stderr  a string that, if corresponding to process output (written
+                to *stderr*), will let the process execution be considered
+                a failure; same as above for modifiers
+=============== ==============================================================
+
+and these are the modifiers for string *stdout/stderr* variables:
+
+===================== ========================================================
+Variable              Description
+===================== ========================================================
+match_exact_output    if the specified string should match from start to end,
+                      if ``False`` the correspondance will be found when the
+                      given string is contained in the output
+match_case_sensitive  if true the comparison is case sensitive
+match_regexp          if true the given string is considered a regular
+                      expression and matched against the process output
+===================== ========================================================
+
+These attributes are all booleans, and default to ``False``: output will be
+searched for a substring with no distinction between uppercase and lowercase.
+Values for the modifier variables can be set independently on all of them:
+for example if ``match_exact_output`` is set to ``True`` and ``match_regexp``
+too, the provided regular expression will be checked at the beginning of the
+process output, if ``match_exact_output`` is ``False`` **When** will just try
+to find a match for the regular expression in the output.
 
 The base class for this type of plugin is ``TaskPlugin``: at the beginning
 of a plugin there must always be the following statement
@@ -295,6 +333,32 @@ PLUGIN_CONST.CATEGORY_COND_MISC   All other condition plugins belong here
 
 The ``category`` member variable can be reassigned *after* the base class
 constructor has been called -- otherwise the new category is overwritten.
+
+There are some *flags* (in the form of attributes, as usual) that can be set
+to either ``True`` or ``False`` to change how the generated condition check
+will behave:
+
+================= ============================================================
+Variable          Description
+================= ============================================================
+sequential        if there is a task list instead of a single associated task
+                  the tasks in the list are run sequentially; since the
+                  application only provides conditions associated with single
+                  tasks this flag can be left alone; set to ``True`` by
+                  default
+repeat            if ``True`` checks will persist after first successful one
+suspended         if ``True`` then checks for the associated condition are
+                  suspended on condition registration
+break_on_failure  when a sequence of tasks is given, break after the first
+                  failed task; normally it is ignored, and defaults to
+                  ``False``
+break_on_success  when a sequence of tasks is given, break after the first
+                  successful task; normally it is ignored, and defaults to
+                  ``False``
+================= ============================================================
+
+Other attributes, methods and other member data may be present in subclasses
+that can be derived from, as specifically described below.
 
 
 Interval Based Condition Plugins
@@ -410,16 +474,34 @@ Plugins of this type must store the actual command line in the
 ``command_line`` member variable, and depending on the command result the
 related event will either occur or not.
 
-.. Note::
+Just like in `Task Plugins`_ there are attributes to check command outcome:
+since there is no concept of success or failure in conditions, but just
+either occurrence or not, the attributes only specify what to expect.
 
-  In this early stage of development, the event will only occur if the
-  spawned command exits with a *success* status (that is, ``0`` exit code).
-  In future releases this will only be the default behavior, while other
-  possibilities will be given to better check for success or not, such as
-  output verification.
+=============== ==============================================================
+Variable        Description
+=============== ==============================================================
+expected_status the status that the called process should return to consider
+                the underlying condition to occur, integer defaulting to ``0``
+expected_stdout string to find a correspondence for in the *standard output*
+expected_stderr string to find a correspondence for in the *standard error*
+=============== ==============================================================
+
+Here too modifiers are available, as for *Task Plugins*, and have the same
+identifiers and specifications:
+
+===================== ========================================================
+Variable              Description
+===================== ========================================================
+match_exact_output    if the specified string should match from start to end,
+                      if ``False`` the correspondance will be found when the
+                      given string is contained in the output
+match_case_sensitive  if true the comparison is case sensitive
+match_regexp          if true the given string is considered a regular
+                      expression and matched against the process output
+===================== ========================================================
 
 The base class for this type of plugin is ``CommandConditionPlugin``.
-
 
 
 .. [#categorymod] For condition plugins the category is automatically set
