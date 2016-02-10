@@ -234,11 +234,71 @@ box.
   implementation instead of replacing it, plugins developed for early
   versions of the application should continue to work in future releases.
 
-The base class for this type of plugin is ``TaskPlugin``.
+The base class for this type of plugin is ``TaskPlugin``: at the beginning
+of a plugin there must always be the following statement
+
+.. code-block:: python
+
+  from plugin import TaskPlugin, PLUGIN_CONST
+
+in order to derive the ``Plugin`` class. The above mentioned ``category``
+base constructor parameter can be given one of the following values:
+
+=================================== ==========================================
+Constant                            Related plugins
+=================================== ==========================================
+PLUGIN_CONST.CATEGORY_TASK_APPS     For plugins that concern applications,
+                                    such as starting or killing a program or
+                                    system utility
+PLUGIN_CONST.CATEGORY_TASK_SETTINGS When the plugin manages session, desktop
+                                    or system settings
+PLUGIN_CONST.CATEGORY_TASK_POWER    For power-management related plugins
+PLUGIN_CONST.CATEGORY_TASK_SESSION  For session management related plugins,
+                                    like session lock, unlock or logout
+PLUGIN_CONST.CATEGORY_TASK_FILEOPS  This has to be used for plugins that
+                                    perform file operation, such as backups
+                                    or synchronizations
+PLUGIN_CONST.CATEGORY_TASK_MISC     All other task plugins belong here
+=================================== ==========================================
+
+These values should be assigned carefully, because the user will be able to
+choose a plugin only after category has been selected.
+
+
+Condition Plugins
+=================
+
+There are several types of condition plugins: for each type the appropriate
+base class must be used. In the same way as for task plugins, the base class
+be imported in the plugin code:
+
+.. code-block:: python
+
+  from plugin import <SpecificConditionPlugin>, PLUGIN_CONST
+
+where ``<SpecificConditionPlugin>`` must be replaced with one of the names
+specified below. The plugin category is determined by the condition plugin
+type, but in case the developed plugin belongs to a different category, its
+value can be assigned one of the following constants:
+
+================================= ============================================
+Constant                          Related plugins
+================================= ============================================
+PLUGIN_CONST.CATEGORY_COND_TIME   Category for plugins that define conditions
+                                  concerning time: *time*, *idle time*, and
+                                  *interval* based conditions normally belong
+                                  to this category
+PLUGIN_CONST.CATEGORY_COND_EVENT  Category for plugins that define conditions
+                                  related to stock and user defined *events*
+PLUGIN_CONST.CATEGORY_COND_MISC   All other condition plugins belong here
+================================= ============================================
+
+The ``category`` member variable can be reassigned *after* the base class
+constructor has been called -- otherwise the new category is overwritten.
 
 
 Interval Based Condition Plugins
-================================
+--------------------------------
 
 Such plugins must provide the length of an interval in minutes, in the
 ``interval`` member variable. A simple plugin of this kind is already
@@ -249,7 +309,7 @@ The base class for this type of plugin is ``IntervalConditionPlugin``.
 
 
 Time Based Condition Plugins
-============================
+----------------------------
 
 Plugins of this type must define a time specification dictionary in the
 ``timespec`` member variable: the dictionary values are integers, with the
@@ -268,7 +328,7 @@ conjunction with other date specifications. Values that must not be checked
 can just be skipped: for a condition that must occur at quarter past any
 hour of the day, just
 
-::
+.. code-block:: python
 
   self.timespec['minute'] = 15
 
@@ -281,7 +341,7 @@ The base class for this type of plugin is ``TimeConditionPlugin``.
 
 
 Idle Time Based Condition Plugins
-=================================
+---------------------------------
 
 In this type of plugin the ``idlemins`` member variable must contain the
 time in minutes that the session has to be idle before the condition occurs;
@@ -292,7 +352,7 @@ The base class for this type of plugin is ``IdleConditionPlugin``.
 
 
 File Change Based Condition Plugins
-===================================
+-----------------------------------
 
 In these a path containing a file or directory to be watched must be provided
 using the ``watched_path`` string member variable. Stock plugins, one for
@@ -302,7 +362,7 @@ The base class for this type of plugin is ``FileChangeConditionPlugin``.
 
 
 Stock Event Based Condition Plugins
-===================================
+-----------------------------------
 
 These plugins provide the counterpart of the *Event Based Conditions* in the
 **When** applet, and only occur when stock events occur. They must hold the
@@ -315,7 +375,7 @@ The base class for this type of plugin is ``EventConditionPlugin``.
 
 
 User-Defined Event Based Condition Plugins
-==========================================
+------------------------------------------
 
 Plugins of this kind must store the name of the user-defined event (as known
 by **When**, thus the name that has been possibly given to the event in an
@@ -330,7 +390,7 @@ The base class for this type of plugin is ``UserEventConditionPlugin``.
 
 
 Command Based Condition Plugins
-===============================
+-------------------------------
 
 Command based conditions are probably the ones that will benefit most from
 the implementation of specific plugins: almost every check can be done
