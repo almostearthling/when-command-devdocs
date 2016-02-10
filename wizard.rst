@@ -334,6 +334,10 @@ PLUGIN_CONST.CATEGORY_COND_MISC   All other condition plugins belong here
 The ``category`` member variable can be reassigned *after* the base class
 constructor has been called -- otherwise the new category is overwritten.
 
+Just like task plugins, condition plugins must offer a ``get_pane()`` method
+that returns a reference to the outermost container object in case they
+need any configuration.
+
 There are some *flags* (in the form of attributes, as usual) that can be set
 to either ``True`` or ``False`` to change how the generated condition check
 will behave:
@@ -482,7 +486,8 @@ either occurrence or not, the attributes only specify what to expect.
 Variable        Description
 =============== ==============================================================
 expected_status the status that the called process should return to consider
-                the underlying condition to occur, integer defaulting to ``0``
+                the underlying condition to occur; it must be integer and by
+                default it is set to ``0``
 expected_stdout string to find a correspondence for in the *standard output*
 expected_stderr string to find a correspondence for in the *standard error*
 =============== ==============================================================
@@ -496,10 +501,12 @@ Variable              Description
 match_exact_output    if the specified string should match from start to end,
                       if ``False`` the correspondance will be found when the
                       given string is contained in the output
-match_case_sensitive  if true the comparison is case sensitive
-match_regexp          if true the given string is considered a regular
+match_case_sensitive  if ``True`` the comparison is case sensitive
+match_regexp          if ``True`` the given string is considered a regular
                       expression and matched against the process output
 ===================== ========================================================
+
+Sae as above, the modifiers are all set to ``False`` by default.
 
 The base class for this type of plugin is ``CommandConditionPlugin``.
 
