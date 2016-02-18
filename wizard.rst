@@ -572,6 +572,589 @@ where ``[/path/to/]plugin_archive_file.wwpz`` is the file name of a packaged
 plugin, possibly including the path if needed.
 
 
+Write a Simple Plugin
+=====================
+
+This section illustrates how to write a simple plugin for the **When Wizard**.
+First a command-based condition plugin is created that needs no configuration
+as it only does a fixed thing. Then the plugin will be expanded in order to
+be configurable and thus expose a configuration pane that will be shown in
+the wizard interface.
+
+
+Step 1: Preparation
+-------------------
+
+Preparation is quite easy: a directory for the plugin is needed as well as
+some source files to start from. These files can be found in the *share*
+directory where **When Wizard** is installed: assuming that the application
+is installed canonically in ``/usr/bin``, the directory where the development
+templates are is ``/usr/share/when-wizard/templates/``. For a condition
+plugin based on command execution, the template code is in the file called
+``template-cond-command.py``. Thus, assuming that the plugin will be called
+*Fire This*:
+
+::
+
+  ~$ mkdir firethis
+  ~$ cd firethis
+  ~/firethis$ cp /usr/share/when-wizard/templates/template-cond-command.py .
+  ~/firethis$ mv template-cond-command.py firethis.py
+
+And this is all for preparation. There is still a lot to do, though.
+
+
+Step 2. Change the Plugin Code
+------------------------------
+
+This is what the template code looks like:
+
+.. code-block:: python
+
+  # file: share/when-wizard/templates/template-cond-command-plugin.py
+  # -*- coding: utf-8 -*-
+  #
+  # Template for a command based condition plugin
+  # Copyright (c) 2015-2016 Francesco Garosi
+  # Released under the BSD License (see LICENSE file)
+
+
+  import locale
+  from plugin import CommandConditionPlugin, PLUGIN_CONST, plugin_name
+
+  # Gtk might be needed: uncomment if this is the case
+  # from gi.repository import Gtk
+
+
+  # setup localization for both plugin text and configuration pane
+  # locale.setlocale(locale.LC_ALL, locale.getlocale())
+  # locale.bindtextdomain(APP_NAME, APP_LOCALE_FOLDER)
+  # locale.textdomain(APP_NAME)
+  # _ = locale.gettext
+
+  # if localization is supported, uncomment the lines above configure
+  # them as appropriate, and remove this replacement function
+  def _(x):
+      return x
+
+
+  HELP = _("""\
+  This is a template for a generic command condition plugin: it can be expanded
+  suitably to the needs of the plugin. A command line based condition plugin
+  must provide the full command line to be executed for the condition to be
+  verified: if the command is successful (zero-status) the condition is true.
+  """)
+
+
+  # class for a plugin: the derived class name should always be Plugin
+  class Plugin(CommandConditionPlugin):
+
+      def __init__(self):
+          CommandConditionPlugin.__init__(
+              self,
+              basename=plugin_name(__file__),
+              name=_("Template"),
+              description=_("Explain here what it does"),
+              author="John Smith",
+              copyright="Copyright (c) 2016",
+              icon='puzzle',
+              help_string=HELP,
+              version="0.1.0",
+          )
+          # the icon resource is only needed if the plugin uses a custom icon
+          # self.graphics.append('plugin_icon.png')
+
+          # the items below might be not needed and can be deleted if the
+          # plugin does not have a configuration panel
+          self.resources.append('plugin_template.glade')
+          self.builder = self.get_dialog('plugin_template')
+          self.plugin_panel = None
+          self.forward_allowed = False        # forward not enabled by default
+
+          # define this only if the plugin provides one or more scripts
+          # self.scripts.append('needed_script.sh')
+
+          # mandatory or anyway structural variables and object values follow:
+          self.command_line = None            # full command line to run
+          self.summary_description = None     # must be set for all plugins
+
+          # this variable is defined here only for demonstrational purposes
+          self.value = None
+
+      def get_pane(self):
+          if self.plugin_panel is None:
+              o = self.builder.get_object
+              self.plugin_panel = o('viewPlugin')
+              self.builder.connect_signals(self)
+          return self.plugin_panel
+
+      # all following methods are optional
+
+      def click_btnDo(self, obj):
+          o = self.builder.get_object
+          o('txtEntry').set_text("Some text")
+
+      def change_entry(self, obj):
+          o = self.builder.get_object
+          self.value = o('txtEntry').get_text()
+          if self.value:
+              self.summary_description = _(
+                  "Something will be done with %s") % self.value
+              self.allow_forward(True)
+          else:
+              self.summary_description = None
+              self.allow_forward(False)
+
+
+  # end.
+
+There is a lot of code that is not needed, because the plugin will display
+no configuration pane and will not use custom resources, not even graphics.
+However, since further development is planned, it might be better just to
+comment out at least part of the code that is not needed for now, especially
+the configuration pane related functions. As no scripts will be used, the
+two lines about scripts will be removed, as well as localization lines and
+the commented out import of the *Gtk* library. Here is the result:
+
+.. code-block:: python
+
+  # file: share/when-wizard/templates/template-cond-command-plugin.py
+  # -*- coding: utf-8 -*-
+  #
+  # Template for a command based condition plugin
+  # Copyright (c) 2015-2016 Francesco Garosi
+  # Released under the BSD License (see LICENSE file)
+
+
+  from plugin import CommandConditionPlugin, PLUGIN_CONST, plugin_name
+
+
+  # if localization is supported, uncomment the lines above configure
+  # them as appropriate, and remove this replacement function
+  def _(x):
+      return x
+
+
+  HELP = _("""\
+  This is a template for a generic command condition plugin: it can be expanded
+  suitably to the needs of the plugin. A command line based condition plugin
+  must provide the full command line to be executed for the condition to be
+  verified: if the command is successful (zero-status) the condition is true.
+  """)
+
+
+  # class for a plugin: the derived class name should always be Plugin
+  class Plugin(CommandConditionPlugin):
+
+      def __init__(self):
+          CommandConditionPlugin.__init__(
+              self,
+              basename=plugin_name(__file__),
+              name=_("Template"),
+              description=_("Explain here what it does"),
+              author="John Smith",
+              copyright="Copyright (c) 2016",
+              icon='puzzle',
+              help_string=HELP,
+              version="0.1.0",
+          )
+          # the icon resource is only needed if the plugin uses a custom icon
+          # self.graphics.append('plugin_icon.png')
+
+          # the items below might be not needed and can be deleted if the
+          # plugin does not have a configuration panel
+          # self.resources.append('plugin_template.glade')
+          # self.builder = self.get_dialog('plugin_template')
+          # self.plugin_panel = None
+          # self.forward_allowed = False        # forward not enabled by default
+
+          # mandatory or anyway structural variables and object values follow:
+          self.command_line = None            # full command line to run
+          self.summary_description = None     # must be set for all plugins
+
+          # this variable is defined here only for demonstrational purposes
+          # self.value = None
+
+      # def get_pane(self):
+      #     if self.plugin_panel is None:
+      #         o = self.builder.get_object
+      #         self.plugin_panel = o('viewPlugin')
+      #         self.builder.connect_signals(self)
+      #     return self.plugin_panel
+
+      # all following methods are optional
+
+      # def click_btnDo(self, obj):
+      #     o = self.builder.get_object
+      #     o('txtEntry').set_text("Some text")
+
+      # def change_entry(self, obj):
+      #     o = self.builder.get_object
+      #     self.value = o('txtEntry').get_text()
+      #     if self.value:
+      #         self.summary_description = _(
+      #             "Something will be done with %s") % self.value
+      #         self.allow_forward(True)
+      #     else:
+      #         self.summary_description = None
+      #         self.allow_forward(False)
+
+
+  # end.
+
+which looks definitely simpler. Some paperwork is needed for the plugin to
+work, so the "anagraphic" details have to be defined. This is done via the
+invocation of the base constructor:
+
+.. code-block:: python
+
+      def __init__(self):
+          CommandConditionPlugin.__init__(
+              self,
+              basename=plugin_name(__file__),
+              name=_("Fire This"),
+              description=_("Expect a file called 'fire.this' in the home directory"),
+              author="Francesco Garosi",
+              copyright="Copyright (c) 2016",
+              icon='file',
+              help_string=HELP,
+              version="1.0.0",
+          )
+
+The ``icon`` parameter has been changed to ``file`` because in the stock
+icons directory (all of which are kindly provided by icons8_ under the
+`Good Boy License`_) [#iloveicons8]_ there is a ``file.png`` icon, which
+is more suitable than the *puzzle* default icon. However it is still not
+the best option for this plugin, and it may change in further development.
+Also, the long help string has to be changed into something helpful, like
+
+.. code-block:: python
+
+  HELP = _("""\
+  This is a sample command based condition plugin: it will only fire when it
+  finds a file called ~/fire.this (that is, created in the home directory
+  with this specific name but regardless of the contents).
+  """)
+
+Next, the only needed features are:
+
+* a command line
+* some text that would explain what the plugin will do in the summary pane.
+
+The second one is not strictly needed: if skipped, it defaults to the
+plugin description. However it is better to give more detailed information
+especially if it can contain references on how the plugin has been possibly
+configured. Such information can be given as in the ``summary_description``
+attribute in string form.
+
+To test if there is a file called *fire.this* in the home directory, the
+following command is more than sufficient:
+
+::
+
+  test -f ~/fire.this
+
+and it is exactly what the ``command_line`` attribute will contain.
+
+.. code-block:: python
+
+          self.command_line = "test -f ~/fire.this"
+          self.summary_description = "On creation of a 'fire.this' file in the home directory"
+
+Note that summary_description should be quite short too, for it should fit
+in a short text line. The plugin source code now looks like the following
+(where commented out lines are omitted for clarity):
+
+.. code-block:: python
+
+  # file: firethis.py
+  # -*- coding: utf-8 -*-
+  #
+  # A very basic command-based condition plugin
+  # Copyright (c) 2015-2016 Francesco Garosi
+  # Released under the BSD License (see LICENSE file)
+
+
+  from plugin import CommandConditionPlugin, PLUGIN_CONST, plugin_name
+
+
+  # if localization is supported, uncomment the lines above configure
+  # them as appropriate, and remove this replacement function
+  def _(x):
+      return x
+
+
+  HELP = _("""\
+  This is a sample command based condition plugin: it will only fire when it
+  finds a file called ~/fire.this (that is, created in the home directory
+  with this specific name but regardless of the contents).
+  """)
+
+
+  # class for a plugin: the derived class name should always be Plugin
+  class Plugin(CommandConditionPlugin):
+
+      def __init__(self):
+          CommandConditionPlugin.__init__(
+              self,
+              basename=plugin_name(__file__),
+              name=_("Fire This"),
+              description=_("Expect a file called 'fire.this' in the home directory"),
+              author="Francesco Garosi",
+              copyright="Copyright (c) 2016",
+              icon='file',
+              help_string=HELP,
+              version="1.0.0",
+          )
+
+          # mandatory or anyway structural variables and object values follow:
+          self.command_line = "test -f ~/fire.this"
+          self.summary_description = "On creation of a 'fire.this' file in the home directory"
+
+
+  # end.
+
+and is actually a *working* plugin, that does exactly what it says. To prove
+it it can be tested in place: assuming it is being developed in the
+``firethis`` subdirectory of the home directory, and assuming that the
+**When Wizard** launcher is in the ``PATH`` variable, as said above a single
+environment variable definition is needed:
+
+::
+
+  ~$ export WHEN_WIZARD_DEVPLUGIN="$HOME/firethis"
+  ~$ when-wizard start-wizard
+
+and the condition plugin will show up in the third page of the wizard, by
+selecting the *Miscellaneous* category.
+
+.. image:: _static/when-wizard_firethis1.png
+
+
+Allow Plugin Configuration
+--------------------------
+
+The plugin could be made more generic, by letting the user choose the name
+of the file to watch for. For the purposes of this example things are kept
+as easy as possible and no file or directory chooser dialog is used, but
+nothing forbids to use such utilities, and in fact many stock plugins do.
+Of course the configuration pane can be built from scratch using *Python*
+code, but in this case a resource file will be used, and edited with the
+`Glade Interface Designer`_. The template directory contains a simple
+resource file, ``plugin_template.glade``, that can work as a starting
+point. From within the plugin development directory:
+
+::
+
+  ~/firethis$ cp /usr/share/when-wizard/templates/plugin_template.glade .
+  ~/firethis$ mv plugin_template.glade firethis.glade
+
+Also, since the icon is not very convincing, and assuming that a suitable
+24x24 pixel PNG has been stolen from the icons8_ web site (please, be kind
+to them, I think I'm abusing their patience) and is in ``~/Downloads``,
+the following step will help give the plugin a nicer icon: [#fireelement]_
+
+::
+
+  ~/firethis$ mv ~/Downloads/Fire\ Element-24.png firethis.png
+
+The ``firethis.glade`` file can be opened in the *Glade Interface Designer*:
+
+.. image:: _static/glade_plugindefault.png
+
+but the *Do* button is not needed, and the entry field should fit the entire
+width of the pane. Thus, after getting rid of the button, the size of the
+*boxChoose* box can be reduced to 1:
+
+.. image:: _static/glade_pluginfirethis.png
+
+and the label text can be turned into something more explicative. As for the
+control names, they can be modified at pleasure, as long as they are correctly
+referred to in the code.
+
+The *txtEntry* field already has a handler for the *changed* event, that
+points to a function called ``change_entry``, thus it has to be edited in
+the plugin code. The commented out one can be used in this case:
+
+.. code-block:: python
+
+    def change_entry(self, obj):
+        o = self.builder.get_object
+        filename = o('txtEntry').get_text()
+        if filename:
+            self.summary_description = _(
+                "On creation of a '%s' file in the home directory") % filename
+            self.command_line = "test -f '~/%s'" % filename
+            self.allow_forward(True)
+        else:
+            self.summary_description = None
+            self.command_line = None
+            self.allow_forward(False)
+
+The ``allow_forward(bool)`` function is used to tell the wizard that the
+*Forward* button can be enabled (on ``True``) or disabled (on ``False``).
+The reference to the ``value`` variable can be removed in the constructor
+because a local variable has been used to create the command line, and the
+code that helps build the pane should be restored. Also, the plugin must be
+instructed to consider resource files for automatic installation. The
+following code goes in the constructor, after the call to the base class
+constructor.
+
+.. code-block:: python
+
+        # the append steps inform the plugin installer of the resource files
+        self.graphics.append('firethis.png')
+        self.resources.append('firethis.glade')
+
+        # here the pane is prepared in the same way as a dialog box, but
+        # it is not initialized: the initialization is deferred to the first
+        # attempt to retrieve the pane
+        self.builder = self.get_dialog('firethis')
+        self.plugin_panel = None
+        self.forward_allowed = True
+
+        # the default command line is almost the same as before
+        self.command_line = "test -f '~/fire.this'"
+        self.summary_description = \
+            "On creation of a 'fire.this' file in the home directory"
+
+Note the ``forward_allowed`` attribute set to ``True``: this authorizes the
+wizard container to keep the *Forward* button enable as soon as the pane
+shows up. This is intentional, because the text entry is initialized with
+the default file name in the pane initialization step below.
+
+The last thing to restore is the ``get_pane`` function, otherwise the
+plugin will still have no configuration possibility. The pane initialization
+step will be performed here instead of overburdening the constructor:
+
+.. code-block:: python
+
+    def get_pane(self):
+        if self.plugin_panel is None:
+            o = self.builder.get_object
+            self.plugin_panel = o('viewPlugin')
+            self.builder.connect_signals(self)
+            o('txtEntry').set_text('fire.this')
+        return self.plugin_panel
+
+The default value of the text entry is set only in the initialization step
+so that when the user navigates back and forth between pages it will not
+be reset to the default value. The complete plugin file is the following:
+
+.. code-block:: python
+
+  # file: firethis.py
+  # -*- coding: utf-8 -*-
+  #
+  # A very basic command-based condition plugin
+  # Copyright (c) 2015-2016 Francesco Garosi
+  # Released under the BSD License (see LICENSE file)
+
+
+  from plugin import CommandConditionPlugin, PLUGIN_CONST, plugin_name
+
+
+  # if localization is supported, uncomment the lines above configure
+  # them as appropriate, and remove this replacement function
+  def _(x):
+      return x
+
+
+  HELP = _("""\
+  This is a sample command based condition plugin: it will only fire when it
+  finds a file specified by the user (that is, created in the home directory
+  with this specific name but regardless of the contents).
+  """)
+
+
+  # class for a plugin: the derived class name should always be Plugin
+  class Plugin(CommandConditionPlugin):
+
+      def __init__(self):
+          CommandConditionPlugin.__init__(
+              self,
+              basename=plugin_name(__file__),
+              name=_("Fire This"),
+              description=_(
+                  "Expect a file with specific name in the home directory"),
+              author="Francesco Garosi",
+              copyright="Copyright (c) 2016",
+              icon='firethis',
+              help_string=HELP,
+              version="1.0.0",
+          )
+          # the append steps inform the plugin installer of the resource files
+          self.graphics.append('firethis.png')
+          self.resources.append('firethis.glade')
+
+          # here the pane is prepared in the same way as a dialog box, but
+          # it is not initialized: the initialization is deferred to the first
+          # attempt to retrieve the pane
+          self.builder = self.get_dialog('firethis')
+          self.plugin_panel = None
+          self.forward_allowed = True
+
+          # the default command line is almost the same as before
+          self.command_line = "test -f '~/fire.this'"
+          self.summary_description = \
+              "On creation of a 'fire.this' file in the home directory"
+
+      def get_pane(self):
+          if self.plugin_panel is None:
+              o = self.builder.get_object
+              self.plugin_panel = o('viewPlugin')
+              self.builder.connect_signals(self)
+              o('txtEntry').set_text('fire.this')
+          return self.plugin_panel
+
+      def change_entry(self, obj):
+          o = self.builder.get_object
+          filename = o('txtEntry').get_text()
+          if filename:
+              self.summary_description = _(
+                  "On creation of a '%s' file in the home directory") % filename
+              self.command_line = "test -f '~/%s'" % filename
+              self.allow_forward(True)
+          else:
+              self.summary_description = None
+              self.command_line = None
+              self.allow_forward(False)
+
+
+  # end.
+
+Note that the ``description`` parameter for the base constructor has been
+modified to better describe the plugin, and the icon name has been changed
+to ``'firethis'`` which is the base name of the custom icon. The ``HELP``
+text above was also slightly modified to reflect the behavior. Calling the
+wizard with the "development" environment variable set, now gives the
+following choice for *Miscellaneous* conditions:
+
+.. image:: _static/when-wizard_firethis2a.png
+
+which gives the possibility to modify the default value:
+
+.. image:: _static/when-wizard_firethis2b.png
+
+and such possible modification is reflected in the summary and confirmation
+page of the **When Wizard**:
+
+.. image:: _static/when-wizard_firethis2c.png
+
+More complex and complicated plugins can be created using this simple pattern
+and starting from the appropriate template. The steps followed for this
+plugin are very similar for *task* plugins too, with the aforementioned
+exceptions. The complete sample plugin code can be downloaded here_ as well
+as the pane resource_ file and the icon_.
+
+
+.. _icons8: https://icons8.com/
+.. _`Good Boy License`: https://icons8.com/good-boy-license/
+.. _`Glade Interface Designer`: https://glade.gnome.org/
+.. _here: _static/firethis.py
+.. _resource: _static/firethis.glade
+.. _icon: _static/firethis.png
+
 .. [#customicon] It is not necessary to provide a custom icon: one of the
   stock ones can be used too and it is rather encouraged, as this would
   keep the style consistent. In case of need, the custom icon must be a
@@ -585,3 +1168,6 @@ plugin, possibly including the path if needed.
   to automatically derive the plugin *base name* from the file name itself
   instead of having to specify it. The same yields for both task and
   condition definition plugins.
+.. [#iloveicons8] Needless to say that I love *icons8*.
+.. [#fireelement] I chose the *Fire Element* icon, and their site offers
+  the possibility to download an already resized icon in a custom size.
