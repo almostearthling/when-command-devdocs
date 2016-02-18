@@ -293,8 +293,8 @@ Variable              Description
 match_exact_output    if the specified string should match from start to end,
                       if ``False`` the correspondance will be found when the
                       given string is contained in the output
-match_case_sensitive  if true the comparison is case sensitive
-match_regexp          if true the given string is considered a regular
+match_case_sensitive  if ``True`` the comparison is case sensitive
+match_regexp          if ``True`` the given string is considered a regular
                       expression and matched against the process output
 ===================== ========================================================
 
