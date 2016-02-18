@@ -86,6 +86,18 @@ or condition. Templates are provided for base plugins, because the plugin
 structures tend to be very similar to each other, so that the coding effort
 can be reduced to the bare minimum.
 
+.. Note::
+  To facilitate development of plugins, a recommended method is provided that
+  allows easier testing and packaging, and that consists in the creation of a
+  specific directory where *all* plugin files are located: the plugin source
+  file, its auxiliary (executable) scripts, the custom icon [#customicon]_
+  file, other graphic files if needed, and the configuration pane resource
+  file -- whose extension must be either ``.ui`` or ``.glade``. To test the
+  plugin in the **When Wizard** in such an environment, it is sufficient to
+  define an environment variable, ``WHEN_WIZARD_DEVPLUGIN``, to point to the
+  absolute path where the plugin files are found. In this way both the
+  wizard and the manager will look for the plugin and its related files in
+  that directory before trying the actual plugin directories.
 
 Reserved Attributes
 ===================
@@ -132,9 +144,11 @@ of need -- for example, to derive the base name of another file, such as an
 icon or resource file.
 
 There are other reserved variable names: ``unique_id``, ``module_basename``,
-``module_path``, ``stock``, ``plugin_type``, ``summary_description``, and
-``forward_allowed``. Most are used internally, but the last two should be
-assigned in the derived class to change the behavior of the plugin:
+``module_path``, ``stock``, ``plugin_type``, ``summary_description``,
+``forward_allowed``, ``scripts``, ``resources`` and ``graphics``.
+Some are used internally, but the following ones should be assigned or
+modified in the derived class to change the behavior of the plugin and to
+allow the plugin to be correctly installed or removed:
 
 * ``summary_description`` must be given an explanatory value that will be
   shown in the summary page of the wizard; it can be modified while the
@@ -145,7 +159,27 @@ assigned in the derived class to change the behavior of the plugin:
   that will be first shown in the configuration pane) *must* be modified
   before the wizard can step forward; if it's set to ``False``, then the
   ``allow_forward()`` method shown below must be used to enable the *Next*
-  button.
+  button
+* ``scripts`` can contain the list of script files (basenames only) that
+  are used by the plugin: such scripts must be executable and available in
+  the plugin development directory; the recommended way to update this
+  variable (and the next two) is via ``self.scripts.append('filename.ext')``
+* ``resources`` can contain the list of resource files (basenames only)
+  used by the plugin: normally it only contains the ``.glade`` (or ``.ui``)
+  file that defines the configuration pane, if needed; these files too must
+  be available in the plugin development directory
+* ``graphics`` must contain the list of graphic files (basenames only) that
+  are used by the plugin, including the plugin icon file (whose basename
+  without extension is specified in the base constructor call) if a custom
+  icon is used; same as above for where the graphic files must be located.
+
+.. Warning::
+  The **When Wizard** installer does not check whether or not a plugin file
+  name or the names of its auxiliary files are already taken: if so, a newly
+  installed plugin may overwrite other installed plugins, although never the
+  ones that come with the application, or parts of them. It is advisable to
+  use very specific names for plugins, and that the auxiliary files have the
+  same name (except for the extension) at least as a prefix.
 
 All plugins have these methods:
 
@@ -511,6 +545,36 @@ Sae as above, the modifiers are all set to ``False`` by default.
 The base class for this type of plugin is ``CommandConditionPlugin``.
 
 
+Plugin Packaging and Installation
+=================================
+
+The **When Wizard** suite contains a simple utility to package plugins for
+installation. It can be invoked as follows:
+
+::
+
+  $ when-wizard plugin-package <directory_name>
+
+where ``<directory_name>`` is the name of the directory where the plugin is
+being developed. The utility is very basic, and just creates an archive with
+a name of the form ``plugin-basename.1433e3da13d9f700.wwpz``: the middle
+part is just some hexadecimal blurb to make the name as unique as possible,
+and the package can be safely renamed after creation, apart from the
+``.wwpz`` extension. The packaged plugin can be installed from the command
+line by issuing
+
+::
+
+  $ when-wizard plugin-install [/path/to/]plugin_archive_file.wwpz
+
+where ``[/path/to/]plugin_archive_file.wwpz`` is the file name of a packaged
+plugin, possibly including the path if needed.
+
+
+.. [#customicon] It is not necessary to provide a custom icon: one of the
+  stock ones can be used too and it is rather encouraged, as this would
+  keep the style consistent. In case of need, the custom icon must be a
+  24x24 pixel PNG with transparency, possibly in a flat colored style.
 .. [#categorymod] For condition plugins the category is automatically set
   depending on the type of condition plugin the actual plugin is derived
   from. However it can be changed after invoking the base class constructor
