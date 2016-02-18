@@ -313,8 +313,9 @@ of a plugin there must always be the following statement
 
   from plugin import TaskPlugin, PLUGIN_CONST
 
-in order to derive the ``Plugin`` class. The above mentioned ``category``
-base constructor parameter can be given one of the following values:
+in order to derive the ``Plugin`` class. [#pluginnameimport]_ The above
+mentioned ``category`` base constructor parameter can be given one of the
+following values:
 
 =================================== ==========================================
 Constant                            Related plugins
@@ -579,3 +580,8 @@ plugin, possibly including the path if needed.
   depending on the type of condition plugin the actual plugin is derived
   from. However it can be changed after invoking the base class constructor
   if the automatic setting does not fit the nature of the plugin.
+.. [#pluginnameimport] Note that the provided plugin development templates
+  also import the ``plugin_name`` module function, so that it is possible
+  to automatically derive the plugin *base name* from the file name itself
+  instead of having to specify it. The same yields for both task and
+  condition definition plugins.
