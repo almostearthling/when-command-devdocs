@@ -661,6 +661,9 @@ This is what the template code looks like:
               help_string=HELP,
               version="0.1.0",
           )
+          # to repeat checks after first success uncomment the following line
+          # self.repeat = True
+
           # the icon resource is only needed if the plugin uses a custom icon
           # self.graphics.append('plugin_icon.png')
 
@@ -758,6 +761,9 @@ the commented out import of the *Gtk* library. Here is the result:
               help_string=HELP,
               version="0.1.0",
           )
+          # to repeat checks after first success uncomment the following line
+          # self.repeat = True
+
           # the icon resource is only needed if the plugin uses a custom icon
           # self.graphics.append('plugin_icon.png')
 
