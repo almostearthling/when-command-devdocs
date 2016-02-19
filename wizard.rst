@@ -931,8 +931,8 @@ selecting the *Miscellaneous* category.
 .. image:: _static/when-wizard_firethis1.png
 
 
-Allow Plugin Configuration
---------------------------
+Step 3: Allow Plugin Configuration
+----------------------------------
 
 The plugin could be made more generic, by letting the user choose the name
 of the file to watch for. For the purposes of this example things are kept
@@ -984,7 +984,7 @@ the plugin code. The commented out one can be used in this case:
         if filename:
             self.summary_description = _(
                 "On creation of a '%s' file in the home directory") % filename
-            self.command_line = "test -f '~/%s'" % filename
+            self.command_line = "test -f ~/'%s'" % filename
             self.allow_forward(True)
         else:
             self.summary_description = None
@@ -1014,7 +1014,7 @@ constructor.
         self.forward_allowed = True
 
         # the default command line is almost the same as before
-        self.command_line = "test -f '~/fire.this'"
+        self.command_line = "test -f ~/'fire.this'"
         self.summary_description = \
             "On creation of a 'fire.this' file in the home directory"
 
@@ -1095,7 +1095,7 @@ be reset to the default value. The complete plugin file is the following:
           self.forward_allowed = True
 
           # the default command line is almost the same as before
-          self.command_line = "test -f '~/fire.this'"
+          self.command_line = "test -f ~/'fire.this'"
           self.summary_description = \
               "On creation of a 'fire.this' file in the home directory"
 
@@ -1113,7 +1113,7 @@ be reset to the default value. The complete plugin file is the following:
           if filename:
               self.summary_description = _(
                   "On creation of a '%s' file in the home directory") % filename
-              self.command_line = "test -f '~/%s'" % filename
+              self.command_line = "test -f ~/'%s'" % filename
               self.allow_forward(True)
           else:
               self.summary_description = None
@@ -1146,6 +1146,62 @@ and starting from the appropriate template. The steps followed for this
 plugin are very similar for *task* plugins too, with the aforementioned
 exceptions. The complete sample plugin code can be downloaded here_ as well
 as the pane resource_ file and the icon_.
+
+
+Step 4: Packaging
+-----------------
+
+To make distribution of plugins easier, a convenient packaging utility has
+been included in the **When Wizard** suite, as mentioned above. To create
+a package for the ``firethis`` plugin, it is sufficient to issue the
+following commands in a terminal window:
+
+::
+
+  ~/firethis$ cd ..
+  ~$ when-wizard plugin-package firethis
+
+This will create a file with a name like ``firethis.14346484091d5400.wwpz``
+(the string between the two dots will be different) which will be recognized
+by the installation page of the **When Wizard Manager** application. The
+plugin can be installed and it will be usable in the **When Wizard** without
+having to set the development environment variable.
+
+.. note::
+
+  A plugin package is nothing special: it just consists of a flat *zip* file
+  containing all the files declared in the plugin constructor section, plus
+  the plugin code file itself, with a *.wwpz* extension. This approach was
+  chosen in order to allow, for instance, to download the *zip* file for a
+  GitHub repository and install it as a plugin directly: the extra files are
+  simply ignored and skipped during installation. However, as the graphical
+  installation utility will not recognize *.zip* as a suitable extension,
+  either the downloaded file is renamed or the console utility is used, as
+  in ``when-wizard plugin-install firethis.zip`` for a hypothetical repo
+  of the ``firethis`` plugin used in the examples.
+
+
+How to Choose a Suitable Name
+=============================
+
+Plugins are installed in a flat fashion in the user home: there are three
+directories in ``~/.local/share/when-command/when-wizard`` for plugin code,
+resources and scripts. If two plugins share the same *base name*, the most
+recently installed plugin overwrites the former. Same occurs for other files
+that the plugin provides, so it's advisable to:
+
+* choose a base name that describes the plugin behavior as precisely as
+  possible, with no concerns for the length: this will reduce the chances
+  of a conflict
+* prefix resource, graphic, and script file names with the base name of the
+  plugin itself.
+
+Since the **When** item names are constructed using the base name of the
+plugin itself, it comes as a consequence that such base names must obey the
+naming rules for **When** items, that is they can only consist of letters,
+digits, dashes and underscores. A plugin base name could start with a dash
+or an underscore, but it's advisable to choose a letter anyway. **When**
+will simply refuse to use items with non compliant names.
 
 
 .. _icons8: https://icons8.com/

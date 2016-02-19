@@ -50,7 +50,7 @@ class Plugin(CommandConditionPlugin):
         self.forward_allowed = True
 
         # the default command line is almost the same as before
-        self.command_line = "test -f '~/fire.this'"
+        self.command_line = "test -f ~/'fire.this'"
         self.summary_description = \
             "On creation of a 'fire.this' file in the home directory"
 
@@ -68,7 +68,7 @@ class Plugin(CommandConditionPlugin):
         if filename:
             self.summary_description = _(
                 "On creation of a '%s' file in the home directory") % filename
-            self.command_line = "test -f '~/%s'" % filename
+            self.command_line = "test -f ~/'%s'" % filename
             self.allow_forward(True)
         else:
             self.summary_description = None
