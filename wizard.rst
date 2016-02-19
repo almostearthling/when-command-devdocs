@@ -1183,8 +1183,8 @@ having to set the development environment variable.
   simply ignored and skipped during installation. However, as the graphical
   installation utility will not recognize *.zip* as a suitable extension,
   either the downloaded file is renamed or the console utility is used, as
-  in ``when-wizard plugin-install firethis.zip`` for a hypothetical repo
-  of the ``firethis`` plugin used in the examples.
+  in ``when-wizard plugin-install firethis-master.zip`` for a hypothetical
+  repository of the ``firethis`` plugin used in the examples.
 
 
 How to Choose a Suitable Name
