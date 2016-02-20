@@ -45,7 +45,6 @@ types of conditions can be added as shortcuts to more complex ones:
 The following paragraphs will illustrate briefly how a plugin for the
 **When Wizard** can be implemented.
 
-
 .. _repository: https://github.com/almostearthling/when-wizard.git
 
 
@@ -216,7 +215,6 @@ There are also other reserved method names common to all pugins: ``to_dict``,
 ``data_retrieve``, ``set_forward_button``, and ``get_config``. These names
 should not be overridden in plugin implementations as overriding them would
 cause the plugin not to work properly.
-
 
 .. _`dialog builder`: https://python-gtk-3-tutorial.readthedocs.org/en/latest/builder.html
 
@@ -1209,13 +1207,13 @@ digits, dashes and underscores. A plugin base name could start with a dash
 or an underscore, but it's advisable to choose a letter anyway. **When**
 will simply refuse to use items with non compliant names.
 
-
 .. _icons8: https://icons8.com/
 .. _`Good Boy License`: https://icons8.com/good-boy-license/
 .. _`Glade Interface Designer`: https://glade.gnome.org/
 .. _here: _static/firethis.py
 .. _resource: _static/firethis.glade
 .. _icon: _static/firethis.png
+
 
 .. [#customicon] It is not necessary to provide a custom icon: one of the
   stock ones can be used too and it is rather encouraged, as this would
