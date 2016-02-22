@@ -667,8 +667,8 @@ This is what the template code looks like:
 
           # the items below might be not needed and can be deleted if the
           # plugin does not have a configuration panel
-          self.resources.append('plugin_template.glade')
-          self.builder = self.get_dialog('plugin_template')
+          self.resources.append('template-plugin_generic.glade')
+          self.builder = self.get_dialog('template-plugin_generic')
           self.plugin_panel = None
           self.forward_allowed = False        # forward not enabled by default
 
@@ -767,8 +767,8 @@ the commented out import of the *Gtk* library. Here is the result:
 
           # the items below might be not needed and can be deleted if the
           # plugin does not have a configuration panel
-          # self.resources.append('plugin_template.glade')
-          # self.builder = self.get_dialog('plugin_template')
+          # self.resources.append('template-plugin_generic.glade')
+          # self.builder = self.get_dialog('template-plugin_generic')
           # self.plugin_panel = None
           # self.forward_allowed = False        # forward not enabled by default
 
@@ -945,13 +945,13 @@ nothing forbids to use such utilities, and in fact many stock plugins do.
 Of course the configuration pane can be built from scratch using *Python*
 code, but in this case a resource file will be used, and edited with the
 `Glade Interface Designer`_. The template directory contains a simple
-resource file, ``plugin_template.glade``, that can work as a starting
+resource file, ``template-plugin_generic.glade``, that can work as a starting
 point. From within the plugin development directory:
 
 ::
 
-  ~/firethis$ cp /usr/share/when-wizard/templates/plugin_template.glade .
-  ~/firethis$ mv plugin_template.glade firethis.glade
+  ~/firethis$ cp /usr/share/when-wizard/templates/template-plugin_generic.glade .
+  ~/firethis$ mv template-plugin_generic.glade firethis.glade
 
 Also, since the icon is not very convincing, and assuming that a suitable
 24x24 pixel PNG has been stolen from the icons8_ web site (please, be kind
