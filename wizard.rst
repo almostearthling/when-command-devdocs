@@ -20,11 +20,10 @@ developed and easily added to the application.
   are expected to be drastically reduced before it reachs a *beta* status,
   but for now things could change abruptly, even on a convenience basis.
 
-The main entry point for **When Wizard** extension is *plugin development*.
 *Plugins* are the parts, in the application, that actually *define* items
 in **When**, while the surrounding application only provides the wizard
-interface and the steps that actually communicate with **When** to create
-the items. Communication with **When** is made possible mainly via the
+interface and the steps that communicate with **When** to create such
+items. Communication with **When** is made possible mainly via the
 *DBus Remote API* later discussed in this manual.
 
 There are two types of plugins that can be developed:
@@ -40,10 +39,16 @@ types of conditions can be added as shortcuts to more complex ones:
 
 * conditions that check *system commands*, and
 * conditions that react to *user defined events*, for which the user event
-  definition could be provided as an *Item Definition File*.
+  definition could be provided as an *Item Definition File*; in this case
+  the plugin developer should make the *Item Definition File* available
+  along with the plugin package (see below) and document that the file
+  has to be imported through the appropriate **When Wizard Manager** page
+  for the plugin to function.
 
 The following paragraphs will illustrate briefly how a plugin for the
-**When Wizard** can be implemented.
+**When Wizard** can be implemented. After the general discussion about
+**When Wizard** plugin development, an example is provided on how to
+develop a plugin from scratch and how to distribute it.
 
 .. _repository: https://github.com/almostearthling/when-wizard.git
 
