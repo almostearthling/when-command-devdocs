@@ -104,6 +104,8 @@ Method                              Description
                                     and ``'sighandlers'`` (or an abbreviation
                                     thereof), or all items if the empty string
                                     is passed
+``IsSuspendedCondition(cond_name)`` tell whether or not the condition whose
+                                    name is provided as argument is suspended
 ``Pause(pause)``                    set the paused state to the one provided
                                     in the *boolean* ``pause`` argument:
                                     paused if *True*, resumed if *False*
@@ -130,6 +132,8 @@ Method                              Description
                                     to *True* the configuration is reloaded
                                     after the operation; returns *True* on
                                     success and *False* on failure
+``SuspendCondition(cond_name, s)``  if ``s`` is *True* the condition is
+                                    suspended, if *False* it is resumed
 =================================== ==========================================
 
 *Item definition* dictionaries returned by ``GetItemDefinition`` and handled
