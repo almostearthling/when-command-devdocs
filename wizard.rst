@@ -101,7 +101,11 @@ can be reduced to the bare minimum.
   define an environment variable, ``WHEN_WIZARD_DEVPLUGIN``, to point to the
   absolute path where the plugin files are found. In this way both the
   wizard and the manager will look for the plugin and its related files in
-  that directory before trying the actual plugin directories.
+  that directory before trying the actual plugin directories. Also, when this
+  variable is correctly defined and the **When Wizard** applications are
+  invoked from the command line, in case of an error while loading a plugin
+  the application prints a Python stack trace to the console instead of just
+  skipping the failing plugin.
 
 Reserved Attributes
 ===================
