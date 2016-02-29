@@ -922,7 +922,6 @@ in a short text line. The plugin source code now looks like the following
 
           # mandatory or anyway structural variables and object values follow:
           self.command_line = "test -f ~/fire.this"
-          self.summary_description = "On creation of a 'fire.this' file in the home directory"
 
 
   # end.
@@ -1032,7 +1031,7 @@ constructor.
             "On creation of a 'fire.this' file in the home directory"
 
 Note the ``forward_allowed`` attribute set to ``True``: this authorizes the
-wizard container to keep the *Forward* button enable as soon as the pane
+wizard container to keep the *Forward* button enabled as soon as the pane
 shows up. This is intentional, because the text entry is initialized with
 the default file name in the pane initialization step below.
 
