@@ -1193,6 +1193,13 @@ having to set the development environment variable.
   in ``when-wizard plugin-install firethis-master.zip`` for a hypothetical
   repository of the ``firethis`` plugin used in the examples.
 
+.. _icons8: https://icons8.com/
+.. _`Good Boy License`: https://icons8.com/good-boy-license/
+.. _`Glade Interface Designer`: https://glade.gnome.org/
+.. _here: _static/firethis.py
+.. _resource: _static/firethis.glade
+.. _icon: _static/firethis.png
+
 
 How to Choose a Suitable Name
 =============================
@@ -1216,12 +1223,130 @@ digits, dashes and underscores. A plugin base name could start with a dash
 or an underscore, but it's advisable to choose a letter anyway. **When**
 will simply refuse to use items with non compliant names.
 
-.. _icons8: https://icons8.com/
-.. _`Good Boy License`: https://icons8.com/good-boy-license/
-.. _`Glade Interface Designer`: https://glade.gnome.org/
-.. _here: _static/firethis.py
-.. _resource: _static/firethis.glade
-.. _icon: _static/firethis.png
+
+Parametric Item Definition Files
+================================
+
+Another way to provide an user with complex actions that wouldn't be easy
+to set up is through *item definition files*. As per the **When** manual,
+**When Wizard** chapter, the user can easily specify an IDF to import using
+the **When Wizard Manager**, which saves her or him from the command line.
+If the IDF is provided with the ``.widf`` file extension, it can also be
+selected through a convenient file chooser dialog box.
+
+Unfortunately IDFs are not easy to modify: if configuration for a certain
+item combination is needed, dealing with a text file might lead to mistakes
+that cause **When** to refuse the file, or even worse to monitor the wrong
+things. That is where the **When Wizard** suite comes to help, thanks to
+the possibility of specifying *parameters* within the file itself. If the
+manager application encounters a parametric IDF during import, it shows a
+dialog box to the user containing all the entries that correspond to
+parameters that can be configured. Each entry is pre-filled with a default
+value that the IDF developer has provided, and for each value there is the
+possibility to add a validity check, so that invalid values will not be
+accepted in the first place.
+
+Parameters are specified in the *item definition file* with special lines
+that have the following form:
+
+::
+
+  @param_name Description:t[ype]:default[:validity_check]
+
+where ``param_name`` is an identifier starting with a letter and containing
+only letters, digits and underscores, in a case sensitive fashion. The
+``Description`` field is what will appear in the label for the entry field
+in the configuration dialog box: it can contain spaces. ``type`` is one of
+``string``, ``integer``, ``real``, ``choice``, ``file``, and ``directory``,
+or any abbreviation thereof. ``default`` is obviously the default value
+(mandatory) and the optional validity check depends on the entry type.
+Possible validity checks are:
+
+* a regular expression for ``string`` entries
+* a ``min:max`` (separated by a colon) for numeric entries
+* a comma separated list of strings for ``choice`` entries: in fact in this
+  case it's almost mandatory to provide the list because choices are shown
+  in a drop-down combo box, which would only contain the default value if
+  no list is specified.
+
+Entries for files and directories can not be checked, however the interface
+will provide appropriate file chooser dialog boxes to help the user. Apart
+from the parameter name, which is separated from the rest of the line by
+blank characters, the definition line is composed by fields separated by
+colons. To include a colon in the default value, it has to be prefixed with
+a backslash. A backslash too has to be prefixed by a backslash to be shown.
+
+The resulting dialog box will show parameters to be configured
+*in the same order* as they appear in the parametric IDF, so if there is a
+consequential rationale for parameter order it has to be reflected in the
+definition file.
+
+Parameters must appear within the regular lines of the IDF in their full
+form, that is ``@param_name`` -- an *at* sign followed by the identifier.
+
+Parameters are replaced *textually* in the *item definition file*: even if
+they are substrings of a longer identifier their occurrences will be
+substituted. However, if a parameter is a prefix for another, the manager
+application will take care to avoid that the shorter one is confused with
+the longer one. There are chances that, if a parameter *occurrence* is
+accidentally entered by the user, it can be replaced if a parameter with
+a matching name is part of the IDF's parameter set. Parameters can be
+thought of as *macros*, to some extent.
+
+To make things clearer, a simple example is hereby provided.
+
+::
+
+  # Test that a certain application has been started started
+
+  [AppsChanged]
+  type: signal_handler
+  bus: session
+  bus name: org.ayatana.bamf
+  object path: /org/ayatana/bamf/matcher
+  interface: org.ayatana.bamf.matcher
+  signal: RunningApplicationsChanged
+  parameters:
+    0, contains, /usr/share/applications/@app.desktop
+
+  [ShowBadge_AppsChanged]
+  type: task
+  command: notify-send -i info "Apps Changed" "The application '@app' has been started."
+  check for: nothing
+
+  [Check_AppsChanged]
+  type: condition
+  based on: user_event
+  event name: AppsChanged
+  task names: ShowBadge_AppsChanged
+
+
+  # Parameter
+  @app Specify an Application:string:gedit:[a-zA-Z0-9_-]+$
+
+  # end.
+
+This example uses the *BAMF* daemon to verify that a certain application has
+been started in the graphical environment. It's by far and away an over
+simplification, as not all the ``.desktop`` files reside in the
+``/usr/share/applications`` directory, but it demonstrates how to use a
+parameter in an *item definition file*. Apart from the parameter line and
+the occurrences of the ``@app`` token, it is a normal IDF [#refuseidf]_ with
+a task, a signal handler and a condition depending on that handler. It simply
+displays a badge whenever an application whose desktop file is recognized
+as matching with ``@app.desktop`` is started.
+
+If an user tries to import it in the **When Wizard Manager**, the following
+dialog box is shown:
+
+.. image:: _static/when-wizard_paramidf1.png
+
+where the user can enter an appropriate application name that should comply
+with the specified regular expression. As stated above, the *description*
+is used to prefix the text entry that is available to the user, and the
+text entry itself comes with the provided default value of ``gedit``. If
+the user accepts the default, *gedit* will be monitored and a badge will be
+shown each time it is started.
 
 
 .. [#customicon] It is not necessary to provide a custom icon: one of the
@@ -1240,3 +1365,5 @@ will simply refuse to use items with non compliant names.
 .. [#iloveicons8] Needless to say that I love *icons8*.
 .. [#fireelement] I chose the *Fire Element* icon, and their site offers
   the possibility to download an already resized icon in a custom size.
+.. [#refuseidf] However it cannot be direcly imported in **When**: the
+  parameter line causes it to be *malformed*.
