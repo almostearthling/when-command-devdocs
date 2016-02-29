@@ -1331,7 +1331,7 @@ been started in the graphical environment. It's by far and away an over
 simplification, as not all the ``.desktop`` files reside in the
 ``/usr/share/applications`` directory, but it demonstrates how to use a
 parameter in an *item definition file*. Apart from the parameter line and
-the occurrences of the ``@app`` token, it is a normal IDF [#refuseidf]_ with
+the occurrences of the ``@app`` token, it is a normal IDF with
 a task, a signal handler and a condition depending on that handler. It simply
 displays a badge whenever an application whose desktop file is recognized
 as matching with ``@app.desktop`` is started.
@@ -1365,5 +1365,3 @@ shown each time it is started.
 .. [#iloveicons8] Needless to say that I love *icons8*.
 .. [#fireelement] I chose the *Fire Element* icon, and their site offers
   the possibility to download an already resized icon in a custom size.
-.. [#refuseidf] However it cannot be direcly imported in **When**: the
-  parameter line causes it to be *malformed*.
