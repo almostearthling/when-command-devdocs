@@ -872,11 +872,13 @@ and it is exactly what the ``command_line`` attribute will contain.
 .. code-block:: python
 
           self.command_line = "test -f ~/fire.this"
-          self.summary_description = "On creation of a 'fire.this' file in the home directory"
+          # self.summary_description = "On creation of a 'fire.this' file in the home directory"
 
 Note that summary_description should be quite short too, for it should fit
-in a short text line. The plugin source code now looks like the following
-(where commented out lines are omitted for clarity):
+in a short text line. We are not providing it for now, though, and stay
+content with the description that is mandatory when calling the base class
+constructor. The plugin source code now looks like the following (where
+commented out lines are omitted for clarity):
 
 .. code-block:: python
 
