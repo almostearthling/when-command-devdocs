@@ -548,7 +548,7 @@ match_regexp          if ``True`` the given string is considered a regular
                       expression and matched against the process output
 ===================== ========================================================
 
-Sae as above, the modifiers are all set to ``False`` by default.
+Same as above, the modifiers are all set to ``False`` by default.
 
 The base class for this type of plugin is ``CommandConditionPlugin``.
 
