@@ -639,7 +639,7 @@ This is what the template code looks like:
   # locale.textdomain(APP_NAME)
   # _ = locale.gettext
 
-  # if localization is supported, uncomment the lines above configure
+  # if localization is supported, uncomment the lines above, configure
   # them as appropriate, and remove this replacement function
   def _(x):
       return x
@@ -739,7 +739,7 @@ the commented out import of the *Gtk* library. Here is the result:
   from plugin import CommandConditionPlugin, PLUGIN_CONST, plugin_name
 
 
-  # if localization is supported, uncomment the lines above configure
+  # if localization is supported, uncomment the lines above, configure
   # them as appropriate, and remove this replacement function
   def _(x):
       return x
@@ -1066,7 +1066,7 @@ be reset to the default value. The complete plugin file is the following:
   from plugin import CommandConditionPlugin, PLUGIN_CONST, plugin_name
 
 
-  # if localization is supported, uncomment the lines above configure
+  # if localization is supported, uncomment the lines above, configure
   # them as appropriate, and remove this replacement function
   def _(x):
       return x
