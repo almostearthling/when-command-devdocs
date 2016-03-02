@@ -2,6 +2,13 @@
 History
 =======
 
+Version 0.9.10 (beta)
+=====================
+
+* Add Remote API to suspend conditions
+* Bug Fixes
+
+
 Version 0.9.9 (beta)
 ====================
 
