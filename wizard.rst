@@ -361,17 +361,23 @@ specified below. The plugin category is determined by the condition plugin
 type, but in case the developed plugin belongs to a different category, its
 value can be assigned one of the following constants:
 
-================================= ============================================
-Constant                          Related plugins
-================================= ============================================
-PLUGIN_CONST.CATEGORY_COND_TIME   Category for plugins that define conditions
-                                  concerning time: *time*, *idle time*, and
-                                  *interval* based conditions normally belong
-                                  to this category
-PLUGIN_CONST.CATEGORY_COND_EVENT  Category for plugins that define conditions
-                                  related to stock and user defined *events*
-PLUGIN_CONST.CATEGORY_COND_MISC   All other condition plugins belong here
-================================= ============================================
+=================================== ============================================
+Constant                            Related plugins
+=================================== ============================================
+PLUGIN_CONST.CATEGORY_COND_TIME     Category for plugins that define
+                                    conditions concerning time: *time*,
+                                    *idle time*, and *interval* based
+                                    conditions normally belong to this
+                                    category
+PLUGIN_CONST.CATEGORY_COND_NETWORK  Category for plugins that define
+                                    conditions related to network activity
+PLUGIN_CONST.CATEGORY_COND_POWER    Category for plugins that define
+                                    conditions related to power management
+PLUGIN_CONST.CATEGORY_COND_EVENT    Category for plugins that define
+                                    conditions related to *events*, both
+                                    stock and user defined
+PLUGIN_CONST.CATEGORY_COND_MISC     All other condition plugins belong here
+=================================== ============================================
 
 The ``category`` member variable can be reassigned *after* the base class
 constructor has been called -- otherwise the new category is overwritten.
