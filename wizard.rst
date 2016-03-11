@@ -215,7 +215,22 @@ allow_forward()       if called without arguments (or with ``True`` as
 get_pane()            if the plugin has a configuration pane, this method
                       *must* be overridden and return a reference to the
                       outmost container object in the plugin pane dialog
-                      structure.
+                      structure
+data_store(data)      store persistent data related to the plugin itself (that
+                      is, common to all instances of the plugin): data should
+                      be a simple value, or a list (or tuple) of simple values
+                      or even a dictionary thereof, however this method is not
+                      meant to store complex data such as class instances
+data_retrieve()       return data previously saved using ``data_store()``
+file_storage([sub])   return the full path to a directory where persistent
+                      files can be created: what to save in this directory
+                      is left to the plugin author and can be either plugin or
+                      instance data; if ``sub`` is provided it is used as the
+                      last subdirectory and can be used to exchange data
+                      between instances of different plugins, however is less
+                      safe than the parameterless version (which uses the
+                      plugin base name); in case of an error ``None`` is
+                      returned instead of a valid path.
 ===================== ========================================================
 
 There are also other reserved method names common to all pugins: ``to_dict``,
