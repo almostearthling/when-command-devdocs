@@ -230,7 +230,16 @@ file_storage([sub])   return the full path to a directory where persistent
                       between instances of different plugins, however is less
                       safe than the parameterless version (which uses the
                       plugin base name); in case of an error ``None`` is
-                      returned instead of a valid path.
+                      returned instead of a valid path
+register_action()     this method can optionally be overridden if there is
+                      any code that should be run upon registration of the
+                      associated action, that is when a condition is set to
+                      trigger a consequence, and it is the last chance to
+                      setup the associated task (command line) or condition
+                      parameters: should return ``True`` on success
+remove_action()       this method can optionally be overriddeen if there is
+                      some cleanup that has to be done *before* the instance
+                      is removed and should return ``True`` on success.
 ===================== ========================================================
 
 There are also other reserved method names common to all pugins: ``to_dict``,
