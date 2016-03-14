@@ -105,7 +105,9 @@ can be reduced to the bare minimum.
   variable is correctly defined and the **When Wizard** applications are
   invoked from the command line, in case of an error while loading a plugin
   the application prints a Python stack trace to the console instead of just
-  skipping the failing plugin.
+  skipping the failing plugin. Also, for task plugins to correctly work, the
+  mani **When** applet *must* be started in a shell where the environment
+  variable is appropriately set.
 
 Reserved Attributes
 ===================
