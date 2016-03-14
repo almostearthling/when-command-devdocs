@@ -107,7 +107,7 @@ can be reduced to the bare minimum.
   the application prints a Python stack trace to the console instead of just
   skipping the failing plugin. Also, for task plugins to correctly work, the
   main **When** applet *must* be started in a shell where the environment
-  variable is appropriately set.
+  variable is appropriately set to the plugin development directory.
 
 Reserved Attributes
 ===================
