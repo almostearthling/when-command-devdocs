@@ -142,9 +142,9 @@ icon                  the name of the icon: should correspond to the base
                       name of a *PNG* file without extension either in the
                       application resource directory or in the user resource
                       directory
-help_string           a sufficiently long help string: will appear in the
+help_string           a sufficiently long help string: it will appear in the
                       wizard box to document what the plugin does; it should
-                      not exceed about four lines of text, all newlines are
+                      not exceed about 250 characters, and all newlines are
                       converted to spaces.
 version               a possibly sortable version string
 ===================== ========================================================
