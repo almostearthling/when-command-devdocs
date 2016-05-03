@@ -195,7 +195,7 @@ general use. [#wizard]_
 .. _`Test Suite`: https://github.com/almostearthling/when-command-testsuite
 .. _`User Documentation`: https://github.com/almostearthling/when-command-docs
 .. _`Contribution Guide`: https://github.com/almostearthling/when-command-devdocs
-.. _`tutorial`: http://when-documentation.readthedocs.org/en/latest/tutorial.html
+.. _`tutorial`: http://when-documentation.readthedocs.io/en/latest/tutorial.html
 .. _`continuous integration`: https://en.wikipedia.org/wiki/Continuous_integration
 .. _`Travis CI`: https://travis-ci.org/
 

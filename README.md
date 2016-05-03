@@ -9,4 +9,4 @@ $ mkdir _build
 $ sphinx-build -a -b html . _build
 ```
 
-The *User Manual* is available at http://when-documentation.readthedocs.org/ as usual.
+The *User Manual* is available at http://when-documentation.readthedocs.io/ as usual.

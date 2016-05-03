@@ -62,7 +62,7 @@ installed ``python-all``, ``python3-all``, ``python-all-dev``,
 ``python3-all-dev`` and ``python-stdeb`` (which is available, but it is for
 Python 2.x and quite old), but they might be unnecessary.
 
-.. _`Packaging and Distributing Projects`: http://python-packaging-user-guide.readthedocs.org/en/latest/distributing/
+.. _`Packaging and Distributing Projects`: http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/
 .. _`Introduction to Debian Packaging`: https://wiki.debian.org/IntroDebianPackaging
 .. _`Python libraries/application packaging`: https://wiki.debian.org/Python/Packaging
 .. _`setuptools documentation`: http://pythonhosted.org/setuptools/

@@ -251,7 +251,7 @@ There are also other reserved method names common to all pugins: ``to_dict``,
 should not be overridden in plugin implementations as overriding them would
 cause the plugin not to work properly.
 
-.. _`dialog builder`: https://python-gtk-3-tutorial.readthedocs.org/en/latest/builder.html
+.. _`dialog builder`: https://python-gtk-3-tutorial.readthedocs.io/en/latest/builder.html
 
 
 Task Plugins

@@ -140,7 +140,7 @@ Method                              Description
 by ``AddItemByDefinition`` are implemented using strings as keys and variants
 as values.
 
-.. _`user guide`: http://when-documentation.readthedocs.org/
+.. _`user guide`: http://when-documentation.readthedocs.io/
 
 
 Reserved Methods
