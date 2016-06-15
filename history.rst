@@ -2,6 +2,20 @@
 History
 =======
 
+
+Version 0.9.12 (beta)
+=====================
+
+* Reset condition tests via menu, command line or wakeup events
+* Bug Fixes
+
+
+Version 0.9.11 (beta)
+=====================
+
+* Support external storage events on Xenial
+
+
 Version 0.9.10 (beta)
 =====================
 

@@ -112,6 +112,10 @@ Method                              Description
 ``Paused()``                        return the current paused state as a
                                     self-explanatory *boolean* value
 ``ReloadConfig()``                  reconfigure the applet from static data
+``RestartConditions()``             reset the internal flag of conditions that
+                                    avoids to repeat checks if one test had
+                                    already been successful, thus reenabling
+                                    *non-recurring* conditions
 ``RemoveItem(item_spec)``           given an *item specification* [#itemspec]_
                                     remove the corresponding item; returns
                                     *True* on success, *False* ortherwise
