@@ -7,6 +7,7 @@ Version 0.9.12 (beta)
 =====================
 
 * Reset condition tests via menu, command line or wakeup events
+* Inspect DBus interfaces for supported signals
 * Bug Fixes
 
 
