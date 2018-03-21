@@ -654,7 +654,7 @@ This is what the template code looks like:
   # -*- coding: utf-8 -*-
   #
   # Template for a command based condition plugin
-  # Copyright (c) 2015-2016 Francesco Garosi
+  # Copyright (c) 2015-2018 Francesco Garosi
   # Released under the BSD License (see LICENSE file)
 
 
@@ -764,7 +764,7 @@ the commented out import of the *Gtk* library. Here is the result:
   # -*- coding: utf-8 -*-
   #
   # Template for a command based condition plugin
-  # Copyright (c) 2015-2016 Francesco Garosi
+  # Copyright (c) 2015-2018 Francesco Garosi
   # Released under the BSD License (see LICENSE file)
 
 
@@ -916,7 +916,7 @@ in a short text line. The plugin source code now looks like the following
   # -*- coding: utf-8 -*-
   #
   # A very basic command-based condition plugin
-  # Copyright (c) 2015-2016 Francesco Garosi
+  # Copyright (c) 2015-2018 Francesco Garosi
   # Released under the BSD License (see LICENSE file)
 
 
@@ -1092,7 +1092,7 @@ be reset to the default value. The complete plugin file is the following:
   # -*- coding: utf-8 -*-
   #
   # A very basic command-based condition plugin
-  # Copyright (c) 2015-2016 Francesco Garosi
+  # Copyright (c) 2015-2018 Francesco Garosi
   # Released under the BSD License (see LICENSE file)
 
 

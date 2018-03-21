@@ -2,7 +2,7 @@
 License (BSD)
 =============
 
-Copyright (c) 2015-2016, Francesco Garosi
+Copyright (c) 2015-2018, Francesco Garosi
 
 All rights reserved.
 

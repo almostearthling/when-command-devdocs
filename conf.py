@@ -43,7 +43,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'Contributing to When'
-copyright = '2015-2016, Francesco Garosi'
+copyright = '2015-2018, Francesco Garosi'
 author = 'Francesco Garosi'
 
 # The version info for the project you're documenting, acts as replacement for
