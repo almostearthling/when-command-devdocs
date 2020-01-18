@@ -152,7 +152,7 @@ Reserved Methods
 
 Methods that should be avoided generally are: ``ExportHistory`` that exports
 history entries to a file given its name, ``KillInstance`` and
-``QuitInstance`` (especiatlly the former) that causes the applet to exit,
+``QuitInstance`` (especially the former) that causes the applet to exit,
 ``RunCLIBasedCondition`` that is only used to force a *command-line based*
 condition to occur and ``ShowDialog`` to fire up a dialog box. These methods
 are only used with ``when-command`` as a controlling utility, and are pretty
